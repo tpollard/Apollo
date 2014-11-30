@@ -232,3 +232,8 @@ void MainWindow::on_horizontalSlider_volume_valueChanged(int value)
 {
     m_mediaPlayer->setVolume(value);
 }
+
+void MainWindow::on_tableWidget_media_customContextMenuRequested(const QPoint &pos)
+{
+    std::cout << "Right click: " << pos.x() << "," << pos.y() << std::endl;
+}

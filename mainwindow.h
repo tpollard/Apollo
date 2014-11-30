@@ -32,6 +32,8 @@ private slots:
     void updateAcoustIDInfo(QNetworkReply *);
     void on_horizontalSlider_volume_valueChanged(int value);
 
+    void on_tableWidget_media_customContextMenuRequested(const QPoint &pos);
+
 private:
     Ui::MainWindow * m_ui;
     QMediaPlayer * m_mediaPlayer;

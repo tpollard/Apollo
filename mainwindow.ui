@@ -52,6 +52,9 @@
       <height>411</height>
      </rect>
     </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::CustomContextMenu</enum>
+    </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
     </property>
@@ -1046,24 +1049,6 @@
        <string>unknown</string>
       </property>
      </widget>
-     <zorder>label_aid_duration</zorder>
-     <zorder>label_5</zorder>
-     <zorder>label_7</zorder>
-     <zorder>label_6</zorder>
-     <zorder>label_aid_title</zorder>
-     <zorder>label_3</zorder>
-     <zorder>label_aid_score</zorder>
-     <zorder>label_2</zorder>
-     <zorder>label_aid_album</zorder>
-     <zorder>label</zorder>
-     <zorder>label_aid_artists</zorder>
-     <zorder>label_4</zorder>
-     <zorder>label_aid_acoustid</zorder>
-     <zorder>label_aid_date</zorder>
-     <zorder>group_acoustid</zorder>
-     <zorder>group_acoustid</zorder>
-     <zorder>group_acoustid</zorder>
-     <zorder>group_acoustid</zorder>
     </widget>
    </widget>
   </widget>
