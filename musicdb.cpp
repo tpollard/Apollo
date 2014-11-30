@@ -21,6 +21,8 @@ MusicDB::MusicDB(const QString path) :
 }
 
 MusicDB::~MusicDB() {
+    // FIXME delete database for now to keep everything clean
+    deleteDB();
 }
 
 bool MusicDB::openDB(const QString path) {
@@ -55,16 +57,18 @@ int MusicDB::insertSong(QString filename, QString title) {
     bool ret = false;
 
     if (m_db.isOpen()) {
-        QSqlQuery query;
-        ret = query.exec(QString("insert into songs values('%1','%2')")
-        .arg(filename).arg(title));
+        if (getSong(filename)) {
+            std::cout << "File " << filename.toStdString() << " already added" << std::endl;
+        } else {
+            QSqlQuery query;
+            ret = query.exec(QString("insert into songs values('%1','%2')").arg(filename).arg(title));
 
-        // Get database given autoincrement value
-        if (ret) {
-            // http://www.sqlite.org/c3ref/last_insert_rowid.html
-            newId = query.lastInsertId().toInt();
+            // Get database given autoincrement value
+            if (ret) {
+                // http://www.sqlite.org/c3ref/last_insert_rowid.html
+                newId = query.lastInsertId().toInt();
+            }
         }
-
     }
     return newId;
 }
@@ -78,8 +82,8 @@ bool MusicDB::getSong(QString filename) {
         std::cout << "title " << query.value("title").toString().toStdString() << std::endl;
         ret = true;
     } else {
-        std::cerr << "nothing found" << std::endl;
-        std::cerr << query.lastError().text().toStdString() << std::endl;
+        //std::cout << "nothing found" << std::endl;
+        //std::cerr << query.lastError().text().toStdString() << std::endl;
     }
 
     return ret;

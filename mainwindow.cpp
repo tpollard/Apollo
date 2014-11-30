@@ -39,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_db.getSong("bar");
 
 
-    m_db.deleteDB();
-
     updateMediaList();
     changeCurrentSong();
 }
