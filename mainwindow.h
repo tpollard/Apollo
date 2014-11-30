@@ -12,6 +12,7 @@
 #include <chromaprint.h>
 #include <QAudioDecoder>
 #include "chromaprint_api.h"
+#include "musicdb.h"
 
 
 namespace Ui {
@@ -39,6 +40,7 @@ private:
     QMediaPlayer * m_mediaPlayer;
     std::map <std::string, int> * m_metaSongMap;
     QNetworkAccessManager m_acoustidMgr;
+    Apollo::MusicDB m_db;
 
     QList<QFileInfo> scanDirIter(QDir dir);
     void changeCurrentSong();

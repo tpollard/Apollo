@@ -14,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui(new Ui::MainWindow),
     m_mediaPlayer(new QMediaPlayer),
     m_metaSongMap(new std::map <std::string, int>),
-    m_acoustidMgr()
+    m_acoustidMgr(),
+    m_db("/home/tommy/apollo.db")
 {
     m_ui->setupUi(this);
     createMediaTable();
@@ -29,6 +30,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // updateAcoustIDInfo(), when the network request "finished()"
     connect(&m_acoustidMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(updateAcoustIDInfo(QNetworkReply*)));
+
+    std::cout << m_db.insertSong("foobar", "blah blah") << std::endl;
+    std::cout << m_db.insertSong("foofoo", "blah bar") << std::endl;
+    std::cout << m_db.insertSong("bar", "bar bar") << std::endl;
+    m_db.getSong("foobar");
+    std::cout << std::endl;
+    m_db.getSong("bar");
+
+
+    m_db.deleteDB();
 
     updateMediaList();
     changeCurrentSong();

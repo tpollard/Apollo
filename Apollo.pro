@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia widgets
+QT       += core gui multimedia widgets sql
 
 TARGET = Apollo
 TEMPLATE = app
@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     id3v2_4_0tag.cpp \
     utils.cpp \
     id3v2tagcreator.cpp \
-    chromaprint_api.cpp
+    chromaprint_api.cpp \
+    musicdb.cpp
 
 HEADERS  += mainwindow.h \
     song.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     id3v2_4_0tag.h \
     utils.h \
     id3v2tagcreator.h \
-    chromaprint_api.h
+    chromaprint_api.h \
+    musicdb.h
 
 FORMS    += mainwindow.ui
 

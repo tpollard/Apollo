@@ -86,11 +86,6 @@ Tag * ID3v2TagCreator::createTag(std::string filename) {
         std::cerr << "Error opening file: " << filename << std::endl;
     }
 
-    if (tag == NULL) {
-        std::cout << "null" << std::endl;
-    } else {
-
-    }
     return tag;
 }
 
