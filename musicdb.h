@@ -21,7 +21,7 @@ public:
 public:
     bool openDB(const QString);
     bool createSongTable();
-    int insertSong(QString, QString);
+    int insertSong(QString, QString, QString track_num, QString artist, QString album, QString album_art);
     bool getSong(QString);
     bool deleteDB();
     QSqlError lastError();

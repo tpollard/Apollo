@@ -31,14 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // updateAcoustIDInfo(), when the network request "finished()"
     connect(&m_acoustidMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(updateAcoustIDInfo(QNetworkReply*)));
 
-    std::cout << m_db.insertSong("foobar", "blah blah") << std::endl;
-    std::cout << m_db.insertSong("foofoo", "blah bar") << std::endl;
-    std::cout << m_db.insertSong("bar", "bar bar") << std::endl;
-    m_db.getSong("foobar");
-    std::cout << std::endl;
-    m_db.getSong("bar");
-
-
     updateMediaList();
     changeCurrentSong();
 }
@@ -94,6 +86,9 @@ void MainWindow::changeCurrentSong() {
         }
 
         requestAcoustIDInfo(fileName.toStdString().c_str());
+
+        // FIXME
+        m_db.getSong(fileName);
     }
 }
 
@@ -176,6 +171,7 @@ void MainWindow::updateMediaList()
             m_ui->fileStatusLabel->setText(QString::fromStdString(std::to_string(i+1)+" of "+std::to_string(songFileList.length())));
 
             std::pair<std::map<std::string,int>::iterator,bool> ret;
+            // FIXME remove metaSonMap and use db instead
             ret = m_metaSongMap->insert(std::pair<std::string,int>(songFileList[i].filePath().toStdString(), 1));
             if (ret.second == true)
             {
@@ -183,31 +179,38 @@ void MainWindow::updateMediaList()
                 int rowCount = m_ui->tableWidget_media->rowCount();
                 m_ui->tableWidget_media->insertRow(rowCount);
 
-                m_ui->tableWidget_media->setItem(rowCount, FILE_PATH_COLUMN, new QTableWidgetItem(songFileList[i].filePath()));
                 Apollo::Song song(songFileList[i].filePath().toStdString());
-                if ((song.isTagValid()) && (song.getTag()->getDataString("TITLE").size() != 0))
-                {
-                    m_ui->tableWidget_media->setItem(rowCount, TITLE_COLUMN, new QTableWidgetItem(QString::fromStdString(song.getTag()->getDataString("TITLE"))));
-                }
-                else
-                {
-                    m_ui->tableWidget_media->setItem(rowCount, TITLE_COLUMN, new QTableWidgetItem(songFileList[i].fileName()));
-                }
+
+                QString filename, title, track_num, artist, album, album_art;
+                filename = songFileList[i].filePath();
+                title = songFileList[i].fileName();
+
                 if (song.isTagValid())
                 {
+                    if (song.getTag()->getDataString("TITLE").size() != 0) {
+                        title = QString::fromStdString(song.getTag()->getDataString("TITLE"));
+                    }
                     if (song.getTag()->getDataString("ARTIST").size() != 0)
                     {
-                        m_ui->tableWidget_media->setItem(rowCount, ARTIST_COLUMN, new QTableWidgetItem(QString::fromStdString(song.getTag()->getDataString("ARTIST"))));
+                        artist = QString::fromStdString(song.getTag()->getDataString("ARTIST"));
                     }
                     if (song.getTag()->getDataString("ALBUM").size() != 0)
                     {
-                        m_ui->tableWidget_media->setItem(rowCount, ALBUM_COLUMN, new QTableWidgetItem(QString::fromStdString(song.getTag()->getDataString("ALBUM"))));
+                        album = QString::fromStdString(song.getTag()->getDataString("ALBUM"));
                     }
                     if (song.getTag()->getDataString("TRACK_NUMBER").size() != 0)
                     {
-                        m_ui->tableWidget_media->setItem(rowCount, TRACK_NUMBER_COLUMN, new QTableWidgetItem(QString::fromStdString(song.getTag()->getDataString("TRACK_NUMBER"))));
+                        track_num = QString::fromStdString(song.getTag()->getDataString("TRACK_NUMBER"));
                     }
                 }
+
+                m_ui->tableWidget_media->setItem(rowCount, FILE_PATH_COLUMN,    new QTableWidgetItem(filename));
+                m_ui->tableWidget_media->setItem(rowCount, TITLE_COLUMN,        new QTableWidgetItem(title));
+                m_ui->tableWidget_media->setItem(rowCount, ARTIST_COLUMN,       new QTableWidgetItem(artist));
+                m_ui->tableWidget_media->setItem(rowCount, ALBUM_COLUMN,        new QTableWidgetItem(album));
+                m_ui->tableWidget_media->setItem(rowCount, TRACK_NUMBER_COLUMN, new QTableWidgetItem(track_num));
+
+                m_db.insertSong(filename, title, track_num, artist, album, album_art);
             }
             else
             {
